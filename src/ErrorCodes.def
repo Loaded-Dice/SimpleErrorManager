@@ -4,7 +4,7 @@
 //  To add a new error: Add one line here
 //  Format: ERROR_CODE(Name)
 // ================================================================
-
+// Example Errors - adjust to your needs:
 ERROR_CODE(WIFI_CONNECT_FAILED)
 ERROR_CODE(SENSOR_TIMEOUT)
 ERROR_CODE(NTP_SYNC_FAILED)
