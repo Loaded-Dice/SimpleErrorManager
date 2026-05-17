@@ -1,0 +1,11 @@
+# Ignore everything except src folder
+*
+!.gitignore
+
+# Allow src folder and its contents
+!src/
+!src/**
+
+# Optional: Include documentation
+!README_ERRORMANAGER.md
+!STRING_NAMES.md

@@ -1,0 +1,25 @@
+// ================================================================
+//  Error Code Definitions
+//  
+//  To add a new error: Add one line here
+//  Format: ERROR_CODE(Name)
+// ================================================================
+// Example Errors - adjust to your needs:
+ERROR_CODE(WIFI_CONNECT_FAILED)
+ERROR_CODE(SENSOR_TIMEOUT)
+ERROR_CODE(NTP_SYNC_FAILED)
+ERROR_CODE(MQTT_DISCONNECT)
+ERROR_CODE(LOW_MEMORY)
+ERROR_CODE(SD_CARD_ERROR)
+ERROR_CODE(BATTERY_LOW)
+ERROR_CODE(TEMPERATURE_HIGH)
+ERROR_CODE(GPS_SIGNAL_LOST)
+ERROR_CODE(FILESYSTEM_FULL)
+ERROR_CODE(INVALID_CONFIG)
+ERROR_CODE(NETWORK_TIMEOUT)
+ERROR_CODE(AUTHENTICATION_FAILED)
+ERROR_CODE(SENSOR_CALIBRATION_ERROR)
+ERROR_CODE(POWER_SUPPLY_UNSTABLE)
+ERROR_CODE(DATA_CORRUPTION)
+
+// --- add more errors here ---
