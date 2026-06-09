@@ -8,9 +8,10 @@
 //
 //    // 1) Define error codes in ErrorCodes.def:
 //    ERROR_CODE(WIFI_FAILED)
-//    ERROR_CODE(SENSOR_TIMEOUT)
+//    ERROR_CODE(SENSOR_TIMEOUT, "Sensor Timeout")
+//    ERROR_CODE(MQTT_DISCONNECT, "MQTT Disconnect", "Broker connection lost")
 //
-//    // 2) Optional: Enable string names (before #include):
+//    // 2) Optional: Enable string names/info (before #include):
 //    #define INCLUDE_ERROR_NAMES
 //
 //    // 3) Include ErrorManager:
@@ -19,16 +20,27 @@
 //    // 4) Create instance:
 //    ErrorManager EM;
 //
-//    // 5) Use string names (if enabled):
-//    Serial.println(EM.getErrorName(WIFI_FAILED));
+//    // 5) Use string names/info (if enabled):
+//    Serial.println(EM.getErrorName(WIFI_FAILED));   // "WIFI_FAILED"
+//    Serial.println(EM.getErrorInfo(SENSOR_TIMEOUT)); // "Sensor did not respond"
 //
 //  Supports up to 256 error codes (32 bytes bitmask).
 // ================================================================
 
+// ── Variadic X-Macro dispatch ───────────────────────────────────
+// Supports:
+//   ERROR_CODE(ALIAS)                          → name = "ALIAS",  info = ""
+//   ERROR_CODE(ALIAS, "Short Name")            → name = "Short Name", info = ""
+//   ERROR_CODE(ALIAS, "Short Name", "Info")    → name = "Short Name", info = "Info"
+#define _EC_DISPATCH(_1,_2,_3,N,...) N
+
 // ── Enum generation via X-Macro ─────────────────────────────────
 #define GETCODE(code) static_cast<uint8_t>(code)
 
-#define ERROR_CODE(name) name,
+#define _EC1_ENUM(a)     a,
+#define _EC2_ENUM(a,n)   a,
+#define _EC3_ENUM(a,n,i) a,
+#define ERROR_CODE(...) _EC_DISPATCH(__VA_ARGS__, _EC3_ENUM, _EC2_ENUM, _EC1_ENUM)(__VA_ARGS__)
 enum ErrCode : uint8_t {
     #include "ErrorCodes.def"
     _ERR_CODE_COUNT_INTERNAL  // automatically calculated
@@ -43,9 +55,23 @@ struct ErrorEntry {
 // ── String names for debugging (optional) ────────────────────────
 // Enable string names with: #define INCLUDE_ERROR_NAMES before #include "ErrorManager.h"
 #ifdef INCLUDE_ERROR_NAMES
-    #define ERROR_CODE(name) #name,
+    #define _EC1_NAME(a)     #a,
+    #define _EC2_NAME(a,n)   n,
+    #define _EC3_NAME(a,n,i) n,
+    #define ERROR_CODE(...) _EC_DISPATCH(__VA_ARGS__, _EC3_NAME, _EC2_NAME, _EC1_NAME)(__VA_ARGS__)
     namespace {
         const char* const ERROR_NAMES[] = {
+            #include "ErrorCodes.def"
+        };
+    }
+    #undef ERROR_CODE
+
+    #define _EC1_INFO(a)     "",
+    #define _EC2_INFO(a,n)   "",
+    #define _EC3_INFO(a,n,i) i,
+    #define ERROR_CODE(...) _EC_DISPATCH(__VA_ARGS__, _EC3_INFO, _EC2_INFO, _EC1_INFO)(__VA_ARGS__)
+    namespace {
+        const char* const ERROR_INFOS[] = {
             #include "ErrorCodes.def"
         };
     }
@@ -208,7 +234,7 @@ public:
         return ErrorCodeRange(_count);
     }
 
-    // ── String name support (optional) ──────────────────────────────
+    // ── String name/info support (optional) ───────────────────────────
 
     const char* getErrorName(ErrCode code) const {
 #ifdef INCLUDE_ERROR_NAMES        
@@ -216,8 +242,18 @@ public:
         if (idx >= _count) return "INVALID_ERROR_CODE";
         return ERROR_NAMES[idx];
 #else
-return "use #define INCLUDE_ERROR_NAMES to use names";
+        return "use #define INCLUDE_ERROR_NAMES to use names";
 #endif        
+    }
+
+    const char* getErrorInfo(ErrCode code) const {
+#ifdef INCLUDE_ERROR_NAMES
+        uint8_t idx = static_cast<uint8_t>(code);
+        if (idx >= _count) return "INVALID_ERROR_CODE";
+        return ERROR_INFOS[idx];
+#else
+        return "use #define INCLUDE_ERROR_NAMES to use info texts";
+#endif
     }
 
 
