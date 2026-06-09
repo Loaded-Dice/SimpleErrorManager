@@ -133,6 +133,7 @@ void printActiveErrors(ErrorManager& em) {
   
 }
 
+//Spawn random errors from the List and clear them randomly to show the capeabilities
 void randomAction() {
     static uint32_t callCount = 0;
     static uint32_t lastErrorTime = 0;

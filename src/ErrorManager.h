@@ -114,7 +114,38 @@ public:
         if (wasActive)  { _clrBit(_activeMask,  idx); _activeCount--;  }
         if (wasPending) { _clrBit(_pendingMask, idx); _pendingCount--; }
 
+        // Reset acknowledged state when error is cleared
+        _clrBit(_acknowledgedMask, idx);
+
         return true;
+    }
+
+    // Acknowledge error (mark as acknowledged)
+    // Returns true if error exists (active or pending) and was acknowledged
+    // Returns false if error code is invalid or error doesn't exist
+    // Acknowledged state persists until error is cleared
+    bool acknowledge(ErrCode code) {
+        uint8_t idx = static_cast<uint8_t>(code);
+        if (idx >= _count) return false;
+
+        bool isActive  = _hasBit(_activeMask,  idx);
+        bool isPending = _hasBit(_pendingMask, idx);
+
+        if (!isActive && !isPending) return false;
+
+        _setBit(_acknowledgedMask, idx);
+        return true;
+    }
+
+    // Short form of acknowledge()
+    bool ack(ErrCode code) {
+        return acknowledge(code);
+    }
+
+    // Check if error is acknowledged
+    // Returns true if error was acknowledged and not yet cleared
+    bool isAcknowledged(ErrCode code) const {
+        return _hasBit(_acknowledgedMask, static_cast<uint8_t>(code));
     }
 
     // Call periodically in error task or loop().
@@ -140,6 +171,7 @@ public:
         for (uint8_t i = 0; i < 32; i++) {
             _activeMask[i] = 0;
             _pendingMask[i] = 0;
+            _acknowledgedMask[i] = 0;
         }
         _activeCount  = 0;
         _pendingCount = 0;
@@ -190,9 +222,10 @@ return "use #define INCLUDE_ERROR_NAMES to use names";
 
 
 private:
-    ErrorEntry _errors[_count]  = {};
-    uint8_t    _activeMask[32]  = {};  // 256 bits = 32 bytes
-    uint8_t    _pendingMask[32] = {};  // 256 bits = 32 bytes
-    uint8_t    _activeCount     = 0;
-    uint8_t    _pendingCount    = 0;
+    ErrorEntry _errors[_count]      = {};
+    uint8_t    _activeMask[32]      = {};  // 256 bits = 32 bytes
+    uint8_t    _pendingMask[32]     = {};  // 256 bits = 32 bytes
+    uint8_t    _acknowledgedMask[32] = {};  // 256 bits = 32 bytes
+    uint8_t    _activeCount         = 0;
+    uint8_t    _pendingCount        = 0;
 };
