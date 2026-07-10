@@ -1,11 +1,11 @@
-# Ignore everything except src folder
-*
-!.gitignore
+# PlatformIO build output
+.pio/
 
-# Allow src folder and its contents
-!src/
-!src/**
+# IDE / editor
+.vscode/
+.idea/
+*.swp
 
-# Optional: Include documentation
-!README_ERRORMANAGER.md
-!STRING_NAMES.md
+# OS
+.DS_Store
+Thumbs.db
