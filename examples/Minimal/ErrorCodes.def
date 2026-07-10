@@ -1,0 +1,9 @@
+// ================================================================
+//  Minimal error-code definition used by the Minimal example.
+//  Formats:
+//      ERROR_CODE(ALIAS)
+//      ERROR_CODE(ALIAS, "Short Name")
+//      ERROR_CODE(ALIAS, "Short Name", "Info text")
+// ================================================================
+ERROR_CODE(WIFI_CONNECT_FAILED)
+ERROR_CODE(SENSOR_TIMEOUT)

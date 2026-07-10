@@ -6,26 +6,40 @@
 //
 //  Usage:
 //
-//    // 1) Define error codes in ErrorCodes.def:
+//    // 1) Create an error-code definition file in your project, e.g.
+//    //    src/ErrorCodes.def:
 //    ERROR_CODE(WIFI_FAILED)
 //    ERROR_CODE(SENSOR_TIMEOUT, "Sensor Timeout")
 //    ERROR_CODE(MQTT_DISCONNECT, "MQTT Disconnect", "Broker connection lost")
 //
-//    // 2) Optional: Enable string names/info (before #include):
+//    // 2) Point ErrorManager at that file (before the include):
+//    #define ERROR_CODES_FILE "ErrorCodes.def"
+//
+//    // 3) Optional: Enable string names/info (before the include):
 //    #define INCLUDE_ERROR_NAMES
 //
-//    // 3) Include ErrorManager:
+//    // 4) Include ErrorManager:
 //    #include "ErrorManager.h"
 //
-//    // 4) Create instance:
+//    // 5) Create instance:
 //    ErrorManager EM;
 //
-//    // 5) Use string names/info (if enabled):
+//    // 6) Use string names/info (if enabled):
 //    Serial.println(EM.getErrorName(WIFI_FAILED));   // "WIFI_FAILED"
 //    Serial.println(EM.getErrorInfo(SENSOR_TIMEOUT)); // "Sensor did not respond"
 //
 //  Supports up to 256 error codes (32 bytes bitmask).
+//  See the examples/ folder for complete, ready-to-run sketches.
 // ================================================================
+
+// ── Error-code source file ──────────────────────────────────────
+// Define ERROR_CODES_FILE before including this header to select the
+// file that lists your ERROR_CODE(...) entries. If it is not defined,
+// a small built-in example set is used so the library still compiles.
+#ifndef ERROR_CODES_FILE
+  #warning "ErrorManager: ERROR_CODES_FILE is not defined - using built-in example codes. Define it before including ErrorManager.h, e.g. '#define ERROR_CODES_FILE \"ErrorCodes.def\"'. See the examples/ folder."
+  #define ERROR_CODES_FILE "ErrorCodes_example.def"
+#endif
 
 // ── Variadic X-Macro dispatch ───────────────────────────────────
 // Supports:
@@ -42,7 +56,7 @@
 #define _EC3_ENUM(a,n,i) a,
 #define ERROR_CODE(...) _EC_DISPATCH(__VA_ARGS__, _EC3_ENUM, _EC2_ENUM, _EC1_ENUM)(__VA_ARGS__)
 enum ErrCode : uint8_t {
-    #include "ErrorCodes.def"
+    #include ERROR_CODES_FILE
     _ERR_CODE_COUNT_INTERNAL  // automatically calculated
 };
 #undef ERROR_CODE
@@ -61,7 +75,7 @@ struct ErrorEntry {
     #define ERROR_CODE(...) _EC_DISPATCH(__VA_ARGS__, _EC3_NAME, _EC2_NAME, _EC1_NAME)(__VA_ARGS__)
     namespace {
         const char* const ERROR_NAMES[] = {
-            #include "ErrorCodes.def"
+            #include ERROR_CODES_FILE
         };
     }
     #undef ERROR_CODE
@@ -72,7 +86,7 @@ struct ErrorEntry {
     #define ERROR_CODE(...) _EC_DISPATCH(__VA_ARGS__, _EC3_INFO, _EC2_INFO, _EC1_INFO)(__VA_ARGS__)
     namespace {
         const char* const ERROR_INFOS[] = {
-            #include "ErrorCodes.def"
+            #include ERROR_CODES_FILE
         };
     }
     #undef ERROR_CODE

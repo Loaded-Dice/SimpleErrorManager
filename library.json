@@ -1,0 +1,30 @@
+{
+  "name": "SimpleErrorManager",
+  "version": "1.0.0",
+  "description": "X-Macro based error tracking for Arduino / ESP32. Track up to 256 error codes in a compact 32-byte bitmask, with optional mercy (debounce) times, acknowledge flags and optional human-readable names/info strings. Error codes are defined per project in a .def file.",
+  "keywords": "error, error-handling, x-macro, esp32, arduino, bitmask, diagnostics",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Loaded-Dice/SimpleErrorManager.git"
+  },
+  "authors": [
+    {
+      "name": "Marlon Graeber",
+      "email": "marlon.graeber@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "frameworks": "arduino",
+  "platforms": "*",
+  "headers": "ErrorManager.h",
+  "examples": [
+    "examples/Basic/Basic.ino",
+    "examples/Minimal/Minimal.ino"
+  ],
+  "export": {
+    "exclude": [
+      ".pio",
+      "platformio.ini"
+    ]
+  }
+}

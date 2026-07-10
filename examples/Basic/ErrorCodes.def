@@ -1,18 +1,20 @@
 // ================================================================
 //  Error Code Definitions
-//  
+//
 //  To add a new error, use one of these formats:
 //
-//    ERROR_CODE(ALIAS) (-->identical with ERROR_CODE(ALIAS, "ALIAS") when #define INCLUDE_ERROR_NAMES is used ) 
+//    ERROR_CODE(ALIAS)
 //    ERROR_CODE(ALIAS, "Short Name")
 //    ERROR_CODE(ALIAS, "Short Name", "Info text")
 //
-//  The 1-arg form uses "ALIAS" as name and "" as info.
+//  With #define INCLUDE_ERROR_NAMES:
+//    ERROR_CODE(ALIAS)  ->  getErrorName(ALIAS) returns "ALIAS", getErrorInfo(ALIAS) returns ""
+//  The 1-argument form uses "ALIAS" as name and "" as info.
 // ================================================================
-// Example Errors - adjust to your needs:
+// Example errors - adjust to your needs:
 ERROR_CODE(WIFI_CONNECT_FAILED)
 ERROR_CODE(SENSOR_TIMEOUT)
-ERROR_CODE(NTP_SYNC_FAILED, "Time Server unavailable","Synchonisation failed due to server timeout")
+ERROR_CODE(NTP_SYNC_FAILED, "Time Server unavailable", "Synchronisation failed due to server timeout")
 ERROR_CODE(MQTT_DISCONNECT)
 ERROR_CODE(LOW_MEMORY)
 ERROR_CODE(SD_CARD_ERROR)
@@ -22,11 +24,9 @@ ERROR_CODE(GPS_SIGNAL_LOST)
 ERROR_CODE(FILESYSTEM_FULL)
 ERROR_CODE(INVALID_CONFIG, "Configuration file missing")
 ERROR_CODE(NETWORK_TIMEOUT)
-ERROR_CODE(AUTH_FAILED_PW, "Authentication Failed", "User entered wrong password. Please contatct help@mail.com")
+ERROR_CODE(AUTH_FAILED_PW, "Authentication Failed", "User entered wrong password. Please contact help@mail.com")
 ERROR_CODE(SENSOR_CALIBRATION_ERROR)
 ERROR_CODE(POWER_SUPPLY_UNSTABLE)
 ERROR_CODE(DATA_CORRUPTION)
 
 // --- add more errors here ---
-
-

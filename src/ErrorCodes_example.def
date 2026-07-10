@@ -1,0 +1,20 @@
+// ================================================================
+//  Built-in fallback error codes
+//
+//  This file is only used when ERROR_CODES_FILE is NOT defined before
+//  including ErrorManager.h. It exists so the library still compiles
+//  out of the box. For real projects, create your own definition file
+//  and select it with:
+//
+//      #define ERROR_CODES_FILE "ErrorCodes.def"
+//
+//  See the examples/ folder for complete definition files.
+//
+//  Supported formats:
+//      ERROR_CODE(ALIAS)
+//      ERROR_CODE(ALIAS, "Short Name")
+//      ERROR_CODE(ALIAS, "Short Name", "Info text")
+// ================================================================
+ERROR_CODE(EXAMPLE_ERROR_A)
+ERROR_CODE(EXAMPLE_ERROR_B, "Example Error B")
+ERROR_CODE(EXAMPLE_ERROR_C, "Example Error C", "Replace these with your own error codes")

@@ -1,7 +1,10 @@
 #include <Arduino.h>
 
-// Minimal example to measure ErrorManager size
+// Minimal example to measure ErrorManager size.
 // #define INCLUDE_ERROR_NAMES  // Uncomment to measure with string names
+
+// Select the error-code definition file for this sketch.
+#define ERROR_CODES_FILE "ErrorCodes.def"
 
 #include "ErrorManager.h"
 
